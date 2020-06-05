@@ -12,10 +12,6 @@ Inhibitory_Model.m:
 
     Function for simulating single compartment inhibitory model
 
-PV_Model.m:
-
-    Function for simulating single compartment PV model
-
 FiringVsFrequencyVsAmplitude.m:
 
     Script to generate plots that indicate firing rate of neurons in 
@@ -30,21 +26,35 @@ SelectivitySignals_wExciteandInhibit.m:
 
     Script to generate plots of waveforms and responses for selective
     stimulation between excitatory and inhibitory models
+Perturbed_Excitatory_Model.m
 
-SelectivitySignals_wPVandInhibit.m:
+    Function for simulating single compartment excitatory model with
+    perturbed dynamics
+    
+Perturbed_Inhibitory_Model.m
 
-    Script to generate plots of waveforms and responses for selective
-    stimulation between PV and inhibitory models
+    Function for simulating single compartment inhibitory model with
+    perturbed dynamics
+    
+NonSelectiveSignalPertubation.m
 
-SelectivitySignals_wPVandExcite.m:
+	Script to analyze performance of non-selective signals on models with
+	perturbed dynamics
+    
+InhibitSelectiveSignalPerturbation.m
 
-    Script to generate plots of waveforms and responses for selective
-    stimulation between PV and excitatory models
+	Script to analyze performance of inhibit-selective signals on models with
+	perturbed dynamics
+    
+ExciteSelectiveSignalPerturbation.m
 
-SelectivitySignals_wPVandInhibitandExcite.m:
+	Script to analyze performance of excite-selective signals on models with
+	perturbed dynamics
+    
+NoisySignals.m
 
-    Script to generate plots of waveforms and responses for selective
-    stimulation between all three neuron models
+	Script to analyze performance of signals in the presence of white
+	Gaussian noise
 
 Folder:
 
