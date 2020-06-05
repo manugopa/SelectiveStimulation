@@ -1,11 +1,11 @@
 NEURON{
-SUFFIX InM_HH    :InM_HH stands for the Inhibitory_Model properties coded like HH_MECHANISM
+SUFFIX InM_HH    
 RANGE gk, gna, el, gnabar, gkbar, gl, m 
 GLOBAL    phi, v0,  minf, hinf, ninf, mtau, htau, ntau
 USEION na READ ena WRITE ina
 USEION k  READ ek  WRITE ik 
 NONSPECIFIC_CURRENT il
-THREADSAFE : assigned GLOBALs will be per thread
+THREADSAFE 
 }
 
 UNITS{
@@ -42,19 +42,14 @@ STATE{ n (1) h (1) }
 
 INITIAL{
         rates(v)
-	:m = minf
         h = hinf
         n = ninf
-       : m = alpham(v)/(alpham(v) + betam(v))
-       : n = alphan(v)/(alphan(v) + betan(v))
-       : h = alphah(v)/(alphah(v) + betah(v))
 }
 
 BREAKPOINT{
 
         SOLVE states METHOD cnexp
         UNITSOFF
- :       m = alpham(v)/(alpham(v)+betam(v))
         gna = gnabar*m*m*m*h
         gk = gkbar*n*n*n*n
         ina = gna*(v - ena)
@@ -66,7 +61,6 @@ BREAKPOINT{
 DERIVATIVE states {
         rates(v)
 	UNITSOFF
-       : m' =  (minf-m)/mtau
         h' = phi* (hinf-h)/htau
         n' = phi* (ninf-n)/ntau
 	UNITSON
@@ -74,8 +68,6 @@ DERIVATIVE states {
 
 PROCEDURE rates(v(mV)) {
 	  LOCAL  alpha, beta, sum
-	:  TABLE minf, mtau, hinf, htau, ninf, ntau
-
 UNITSOFF
 	alpha =.1 * vtrap(-(v+35),10)
         beta =  4 * exp(-(v+60)/18)
@@ -83,13 +75,13 @@ UNITSOFF
         mtau = 1/(sum)
         minf = alpha/sum
 	m = minf
-                :"h" sodium inactivation system
+        :"h" sodium inactivation system
         alpha = .07 * exp(-(v+58)/20)
         beta = 1 / (exp(-(v+28)/10) + 1)
         sum = alpha + beta
         htau = 1/(sum)
         hinf = alpha/sum
-                :"n" potassium activation system
+        :"n" potassium activation system
         alpha = .01*vtrap(-(v+34),10)
         beta = .125*exp(-(v+44)/80)
         sum = alpha + beta

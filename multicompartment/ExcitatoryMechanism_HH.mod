@@ -1,5 +1,5 @@
 NEURON{
-SUFFIX ExM_HH    :ExM_HH stands for the Excitatory_Model properties coded like the hh mechanism
+SUFFIX ExM_HH    
 RANGE gk, gna, gnabar, gkbar, gl, el,h_infty
 GLOBAL  v0, minf, hinf, ninf, mtau, htau, ntau
 USEION na READ ena WRITE ina
@@ -51,7 +51,7 @@ BREAKPOINT{
         SOLVE states METHOD cnexp
         UNITSOFF
         gna = gnabar*m*m*m*h
-        gk = gkbar*n                            :it looks like it have to be n^4
+        gk = gkbar*n                            
         ina = gna*(v - ena)
         ik = gk*(v - ek)
         il = gl*(v - el)
@@ -77,13 +77,13 @@ PROCEDURE rates(v(mV)) {
         mtau = 1/(sum)
         minf = alpha/sum
         m = minf
-	 :"h" sodium inactivation system
+	:"h" sodium inactivation system
         alpha = 0.024 * vtrap(-(v+50),5)
         beta = 0.0091*vtrap((v+75),5)
         sum = alpha + beta
         htau = 1/(sum)
         hinf = alpha/sum
-                :"n" potassium activation system
+        :"n" potassium activation system
         alpha = 0.02*vtrap(-(v-20),9)
         beta = 0.002*vtrap((v-20),9)
         sum = alpha + beta

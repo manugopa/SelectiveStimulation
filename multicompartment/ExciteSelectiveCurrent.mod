@@ -5,36 +5,37 @@ ELECTRODE_CURRENT i}
 
 UNITS { (mA) =  (milliamp) }
 
- PARAMETER {
+PARAMETER {
           del= 10 (ms)
           dur= 150 (ms) <0,1e9>
           period = 10 (ms)
 }
 
- ASSIGNED {
+ASSIGNED {
           i (mA/cm2)
           t_period (ms)
 }
 
- INITIAL { i = 0 }
+INITIAL { i = 0 }
 
- BREAKPOINT {
+BREAKPOINT {
             UNITSOFF
             t_period = fmod((t-del),period)
             UNITSON
             at_time(del)
             at_time(del+dur)
-           if (t < del + dur && t > del) {
+            if (t < del + dur && t > del) {
               UNITSOFF
-              if (t_period<1) { i=(-1.61)*(t_period/1)}
-              else if (t_period<(5-1))  {i=-1.61}
-              else if (t_period<5) {i=(-1.61) - (-1.61)*((t_period-(5-1))/(1))}
+              if (t_period<1) { i=(-.77)*(t_period/1)}
+              else if (t_period<(5-.1))  {i=-.77}
+              else if (t_period<5) {i=(-.77) - (-.77)*((t_period-(5-.1))/(1))}
 	      else if (t_period<(5+1)) {i=(0.7)*(((t_period)-(5))/1)}
 	      else if (t_period<8) {i=0.7}
 	      else if (t_period<(8+1)) {i=(0.7)-(0.7)*((t_period - 8)/1)}
 	      else  {i=0}
               UNITSON
-           } else {
+            } else {
               i=0
                   }
-            }
+	    if(t_period<5){i=(1.05)*i}else{i=(.6)*i}
+}

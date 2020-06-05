@@ -17,54 +17,16 @@ signal = (50/3)*signal;
 [T_Excite,S_Excite]=Excitatory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
 [T_Inhibit,S_Inhibit]=Inhibitory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
 response = figure;
-plot(T_Excite,S_Excite(:,4),'r'), xlabel('Time (ms)'), ylabel('Membrane Potential (mV)');
+plot(T_Inhibit,15*ones(size(T_Inhibit)),'b');
 set(findall(gca, 'Type', 'Line'),'LineWidth',2);
 set(gca,'fontsize',24);
 set(gca,'fontname','Times');
 hold on;
-plot(T_Inhibit,S_Inhibit(:,3),'b--');
+plot(T_Inhibit,-5*ones(size(T_Inhibit)),'r');
 set(findall(gca, 'Type', 'Line'),'LineWidth',2);
 set(gca,'fontsize',24);
 set(gca,'fontname','Times');
-ylim([-200 100]);
-xlim([min(T_Inhibit) max(T_Inhibit)]);
-yticks([-200 -100 0 100]);
-xticks([0 40 80 120 160]);
-l = legend('Excitatory','Inhibitory');
-set(l,'FontSize',24);
-set(l,'FontName','Times');  
-
-I=[zeros(1,Fs*10),signal,zeros(1,Fs*0)];
-t=(1:length(I))/Fs;
-current = figure;
-plot(t,I), xlabel('Time (ms)'), ylabel('Applied Current(\muA/cm^2)');
-set(findall(gca, 'Type', 'Line'),'LineWidth',2);
-set(gca,'fontsize',24);
-set(gca,'fontname','Times');
-ylim([-25 40]);
-xlim([min(t) max(t)]);
-xticks([0 40 80 120 160]);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%Inhibitory 100 Hz selective
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Fs = 10;
-period_count = 15;
-period_length = 0.01; %100 Hz
-tvec=1/(1000*Fs):1/(1000*Fs):period_length; % in seconds, converted to ms when plotting.
-
-pulse_width = 0.006;
-tIs = 0;
-tIe = tIs+pulse_width;
-tIe2 = tIe+pulse_width;
-signal = -5.*(tvec-tIs>0).*(tvec-tIe<0)+10.*(tvec-tIe>0).*(tvec-tIe2<0);
-signal = repmat(signal,1,period_count);
-
-[T_Excite,S_Excite]=Excitatory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
-[T_Inhibit,S_Inhibit]=Inhibitory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
-response = figure;
+hold on;
 plot(T_Inhibit,S_Inhibit(:,3),'b');
 set(findall(gca, 'Type', 'Line'),'LineWidth',2);
 set(gca,'fontsize',24);
@@ -92,18 +54,88 @@ set(gca,'fontname','Times');
 ylim([-25 40]);
 xlim([min(t) max(t)]);
 xticks([0 40 80 120 160]);
+
+saveas(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/NonSelectiveResponse.fig');
+print(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/NonSelectiveResponse.jpg','-djpeg','-r300');
+saveas(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/NonSelectiveCurrent.fig');
+print(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/NonSelectiveCurrent.jpg','-djpeg','-r275');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%Inhibitory 100 Hz selective
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Fs = 10;
+period_count = 15;
+period_length = 0.01; %100 Hz
+tvec=1/(1000*Fs):1/(1000*Fs):period_length; % in seconds, converted to ms when plotting.
+
+pulse_width = 0.006;
+tIs = 0;
+tIe = tIs+pulse_width;
+tIe2 = tIe+pulse_width;
+signal = -5.*(tvec-tIs>0).*(tvec-tIe<0)+10.*(tvec-tIe>0).*(tvec-tIe2<0);
+signal = repmat(signal,1,period_count);
+
+[T_Excite,S_Excite]=Excitatory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
+[T_Inhibit,S_Inhibit]=Inhibitory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
+response = figure;
+plot(T_Inhibit,15*ones(size(T_Inhibit)),'b');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+hold on;
+plot(T_Inhibit,-5*ones(size(T_Inhibit)),'r');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+hold on;
+plot(T_Inhibit,S_Inhibit(:,3),'b');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+hold on;
+plot(T_Excite,S_Excite(:,4),'r'), xlabel('Time (ms)'), ylabel('Membrane Potential (mV)');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+ylim([-200 100]);
+xlim([min(T_Inhibit) max(T_Inhibit)]);
+yticks([-200 -100 0 100]);
+xticks([0 40 80 120 160]);
+l = legend('Inhibitory','Excitatory');
+set(l,'FontSize',24);
+set(l,'FontName','Times');  
+
+I=[zeros(1,Fs*10),signal,zeros(1,Fs*0)];
+t=(1:length(I))/Fs;
+current = figure;
+plot(t,I), xlabel('Time (ms)'), ylabel('Applied Current(\muA/cm^2)');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+ylim([-25 40]);
+xlim([min(t) max(t)]);
+xticks([0 40 80 120 160]);
+
+saveas(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/InhibitSelectiveResponse.fig');
+print(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/InhibitSelectiveResponse.jpg','-djpeg','-r300');
+saveas(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/InhibitSelectiveCurrent.fig');
+print(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/InhibitSelectiveCurrent.jpg','-djpeg','-r275');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%Excitatory 100 Hz selective
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Fs = 1;
+Fs = 10;
 period_count = 15;
 period_length = 0.01; %100 Hz
 tvec=1/(1000*Fs):1/(1000*Fs):period_length; % in seconds, converted to ms when plotting.
 
-tIstartRamp = 0.004;
+tIstartRamp = 0.0049;
 tImidRamp = 0.005;
 tIendRamp = 0.006;
 tIendHigh = 0.009;
@@ -116,6 +148,16 @@ signal = repmat(signal,1,period_count);
 [T_Excite,S_Excite]=Excitatory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
 [T_Inhibit,S_Inhibit]=Inhibitory_Model(-70,10,0,signal,length(signal)/Fs,Fs);
 response = figure;
+plot(T_Inhibit,15*ones(size(T_Inhibit)),'b');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+hold on;
+plot(T_Inhibit,-5*ones(size(T_Inhibit)),'r');
+set(findall(gca, 'Type', 'Line'),'LineWidth',2);
+set(gca,'fontsize',24);
+set(gca,'fontname','Times');
+hold on;
 plot(T_Excite,S_Excite(:,4),'r'), xlabel('Time (ms)'), ylabel('Membrane Potential (mV)');
 set(findall(gca, 'Type', 'Line'),'LineWidth',2);
 set(gca,'fontsize',24);
@@ -129,7 +171,7 @@ ylim([-200 100]);
 xlim([min(T_Inhibit) max(T_Inhibit)]);
 yticks([-200 -100 0 100]);
 xticks([0 40 80 120 160]);
-l = legend('Excitatory','Inhibitory');
+l = legend('Inhibitory','Excitatory');
 set(l,'FontSize',24);
 set(l,'FontName','Times');
 
@@ -143,4 +185,10 @@ set(gca,'fontname','Times');
 ylim([-25 40]);
 xlim([min(t) max(t)]);
 xticks([0 40 80 120 160]);
+
+saveas(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/ExciteSelectiveResponse.fig');
+print(response,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/ExciteSelectiveResponse.jpg','-djpeg','-r300');
+saveas(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/ExciteSelectiveCurrent.fig');
+print(current,'/Users/manugopa/Dropbox/NeuralResearch/FigsAfterReview/ExciteSelectiveCurrent.jpg','-djpeg','-r275');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
